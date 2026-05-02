@@ -1,0 +1,26 @@
+[project]
+name = "fast"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "dotenv>=0.9.9",
+    "ruff>=0.15.11",
+]
+
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]
+ignore = ["E203"]
+[tool.ruff.format]
+quote-style = "double"
+
+[dependency-groups]
+dev = [
+    "pylint>=4.0.5",
+]
+
+[tool.pylint.messages_control]
+disable = ["C0116", "E0401", "C0114", "C0115", "R0903"]
+

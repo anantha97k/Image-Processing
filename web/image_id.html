@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" href={{ url + image.image_name}} as="image">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        Picture Name: {{ image.image_name }}
+    </header>
+
+    <main>
+        <img src={{ url }}  width="35%" height="auto">
+    </main>
+    <br>
+    <footer>
+        {% extends "image_transform.html" %}
+    </footer>
+
+
+
+
+</body>
+</html>

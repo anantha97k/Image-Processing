@@ -1,0 +1,124 @@
+
+{% block content %}
+    <form method="post" id="form">
+        <section>
+            <fieldset>
+                <legend>
+                    Resize 
+                </legend>
+            <input type="number" name="resize-width" min="0" max="4096" value="0">
+            <label for="resize-width">Resize Width</label>
+            <input type="number" name="resize-height" min="0" max="4096" value="0">
+            <label for="resize-height">Resize Height</label>
+            </fieldset>
+        </section>
+
+        <section>
+            <fieldset>
+                <legend>
+                    Crop
+                </legend>
+            <input type="number" name="crop-x" id="crop-x" min="0" max="4096" value="0">
+            <label for="crop-x">X coordinate</label>
+            <input type="number" name="crop-y" id="crop-y" min="0" max="4096" value="0">
+            <label for="crop-y">Y coordinate</label>
+            <input type="number" name="crop-width" id="crop-width" min="0" max="4096" value="0">
+            <label for="crop-width">Width</label>
+            <input type="number" name="crop-height" id="crop-height" min="0" max="4096" value="0">
+            <label for="crop-height">Height</label>
+            </fieldset>
+        </section>
+
+        <section>
+            <fieldset>
+                <legend>
+                    Rotate
+                </legend>
+            <input type="number" name="rotate" id="rotate" min="0" max="359" placeholder="0-359" value="0">
+            <label for="rotate">Rotate</label>
+            </fieldset>
+
+        </section>
+
+        <section>
+            <fieldset>
+            <legend>
+                Format
+            </legend>
+            <input type="radio" name="format" id="jpg" value="jpg" checked>
+            <label for="jpg">JPG</label>
+            <input type="radio" name="format" id="png" value="png">
+            <label for="png">PNG</label>
+            </fieldset>
+        </section>
+
+        <section>
+            <fieldset>
+                <legend>
+                    Filters
+                </legend>
+            <input type="checkbox" name="grayscale" id="grayscale"" value="True">
+            <label for="grayscale"">grayscale</label>
+            <input type="checkbox" name="sepia" id="sepia" value="True" >
+            <label for="sepia">sepia</label>
+            </fieldset>
+
+        </section>  
+
+        <button type="submit">Transform</button>
+    </form>
+
+
+
+
+<script>
+    const id = window.location.pathname.split('/')[2]
+    const form = document.querySelector('#form')
+    form.addEventListener('submit', (event) => {
+        event.preventDefault()
+
+        data_json = new FormData(form)
+
+        const transformations =  {
+               "resize": {
+                 "width":  parseInt(data_json.get('resize-width')),
+                 "height": parseInt(data_json.get('resize-height')),
+               },
+               "crop": {
+                 "width": parseInt(data_json.get('crop-width')),
+                 "height": parseInt(data_json.get('crop-height')),
+                 "x": parseInt(data_json.get('crop-x')),
+                 "y": parseInt(data_json.get('crop-y')),
+               },
+               "rotate": parseInt(data_json.get('rotate')),
+               "format": data_json.get('format'),
+               "filters": {
+                 "grayscale": Boolean(data_json.get('grayscale')),
+                 "sepia": Boolean(data_json.get('sepia'))
+               }
+             }
+
+        let filename
+        const url = `http://localhost:8000/images/${id}/transform`
+        const data = fetch(url, {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(transformations)
+        })
+        .then(data =>{ 
+            header = data.headers.get('content-disposition').split('"')[1]
+            return data.blob() 
+        })
+        .then(blob => { 
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a')
+            a.href = url
+            a.download = header
+            a.click()
+            URL.revokeObjectURL(url);
+        })
+    })
+</script>
+{% endblock content %}

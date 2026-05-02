@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>    
+        <h4>
+            User_ID : {{ user.uid }} 
+        </h4>
+        <h5>
+            Username : {{ user.username }}
+        </h5>
+    </header>
+    <main>
+        <p>Images name </p>
+        <ul>
+            {% for image in user.images %}
+            <li>
+                <a id="link" href="{{ url_for('op', uid=image.img_id) }}" target="_blank">
+                    {{ image.image_name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+    <aside>
+        <form method="post" action="/images" enctype="multipart/form-data">
+        <input type="file" name="file" id="file">
+        <button type="submit">Submit</button>
+    </form>
+    </aside>
+</body>
+</html>
+
