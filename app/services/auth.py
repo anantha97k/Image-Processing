@@ -8,10 +8,9 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from sqlalchemy import select
 
-from app.schemas.form__model import TokenData, UserForm, UserInDB
-
 # Pydantic
 from app.schemas.db_model import Users
+from app.schemas.form__model import TokenData, UserForm, UserInDB
 from app.shared.const import ALGORITHM, SECRET_KEY
 
 # DB

@@ -2,7 +2,7 @@ import uuid
 
 from PIL import Image
 
-from app.services.async_task import image_processing
+from app.services.celery import image_processing
 from app.shared.aws import aws_get_image
 
 sepia_matrix = (
@@ -23,7 +23,6 @@ sepia_matrix = (
 
 @image_processing.task
 def transform_image_task(transform: dict, image_name):
-    print(transform)
     aws_get_image(image_name)
     image = Image.open(f"images/{image_name}")
     if transform["resize"]["width"] > 0 and transform["resize"]["width"] > 0:

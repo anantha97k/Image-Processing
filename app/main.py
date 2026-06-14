@@ -1,10 +1,9 @@
 from fastapi import (
     FastAPI,
     HTTPException,
-    status,
 )
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 # Routers
@@ -41,11 +40,6 @@ async def unicorn_exception_handler(exc: HTTPException):
     return JSONResponse(status_code=exc.status_code, content=exc.detail)
 
 
-@app.get("/", response_class=JSONResponse)
+@app.get("/")
 async def test():
-
-    return JSONResponse(
-        headers={"Set-Cookie": "my-key=my value"},
-        content="hEADERS",
-        status_code=status.HTTP_200_OK,
-    )
+    return FileResponse("web/index.html")
